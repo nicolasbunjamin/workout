@@ -80,16 +80,20 @@ def index():
             return render_template("/setup")
 
         # TODO: Start workout with timer
-        ''' Exercise will consist of:
+        """ Exercise will consist of:
         – dynamic stretches
         – advanced warm-ups if level > 1
-        – main strength training circuit split to three pairs, three sets each
-            • squat and pull (alternating, with 90 seconds rest)
+        – main strength training circuit split to three pairs,
+          three sets each (alternating, with 90 seconds rest)
+            • squat and pull
             • hinge and dip
             • push and row
         – core training circuit, three sets each
 
-        Unless otherwise stated, do eight reps for each set.'''
+        Unless otherwise stated, do eight reps for each set.
+
+        Click on anything/tap screen to proceed to next exercise.
+        """
 
         return redirect("workout.html")
 
