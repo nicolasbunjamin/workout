@@ -1,18 +1,23 @@
+''' Web app for /r/bodyweightfitness's Recomended Routine™. '''
+
 from flask import Flask, flash, redirect, render_template, request
+# TODO: import time
 
 app = Flask(__name__)
 
 
 class Exercise:
 
-    stretches = ("Yuri's Shoulder Band Warmup",
-                 "Squat Sky Reaches",
-                 "GMB Wrist Prep",
-                 "Deadbugs")
-    warmups = ("Arch Hangs",
-               "Parallel Bar Support Hold",
-               "Squats",
-               "Romanian Deadlifts")
+    dynamic_stretches = ("Yuri's Shoulder Band Warmup",
+                         "Squat Sky Reaches",
+                         "GMB Wrist Prep",
+                         "Deadbugs")  # 30 seconds
+
+    advanced_warmups = ("Arch Hangs",
+                        "Parallel Bar Support Hold",  # 30 seconds
+                        "Squats",
+                        "Romanian Deadlifts")
+
     squat = ("Assisted Squats",
              "Squats",
              "Bulgarian Split Squats",
@@ -28,7 +33,7 @@ class Exercise:
              "Banded Nordic Curl Negatives",
              "Banded Nordic Curls",
              "Nordic Curls")
-    dip = ("Parallel Bar Support Hold",
+    dip = ("Parallel Bar Support Hold",  # 60 seconds
            "Negative Dips",
            "Parallel Bar Dips",
            "Parallel Bar Dips",
@@ -44,6 +49,7 @@ class Exercise:
            "Wide Rows",
            "Weighted Inverted Rows")
     progressions = (squat, pull, hinge, dip, push, row)
+
     core = ("Ring Ab Rollouts",
             "Banded Pallof Presses",
             "Reverse Hyperextension")
@@ -52,7 +58,7 @@ class Exercise:
         """ Set difficulty level on a scale of 0 to 4 """
         self.level = level
 
-        """ Generate today's exercise plan """
+        """ Generate today's main circuit """
         self.circuit = []
         for item in self.progressions:
             self.circuit.append(item[level])
@@ -72,7 +78,17 @@ def index():
             flash("Please select level of training.")
             return render_template("/setup")
 
-        # Start workout
+        # TODO: Start workout with timer
+        ''' Exercise will consist of:
+        – dynamic stretches
+        – advanced warm-ups if level > 1
+        – main strength training circuit split to three pairs, three sets each
+            • squat and pull (alternating, with 90 seconds rest)
+            • hinge and dip
+            • push and row
+        – core training circuit, three sets each
+
+        Unless otherwise stated, do eight reps for each set.'''
 
         return redirect("workout.html")
 
@@ -84,3 +100,6 @@ def index():
 @ app.route("/about")
 def setup():
     return render_template("about.html")
+
+
+# TODO: Register, log-in, and workout history feature
