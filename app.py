@@ -1,6 +1,7 @@
 """ Web app for /r/bodyweightfitness's Recomended Routine™. """
 
 from flask import Flask, flash, redirect, render_template, request
+from numpy import array_split
 # TODO: import time
 
 app = Flask(__name__)
@@ -64,6 +65,49 @@ class Exercise:
         for item in self.progressions:
             self.circuit.append(item[level])
 
+
+exercise = Exercise(3)
+
+# Dynamic stretches
+print("Let's begin!")
+for item in exercise.dynamic_stretches:
+    if item == "Deadbugs":
+        print("30 seconds of "+item)
+    else:
+        print("8 reps of "+item)
+
+# Advanced warm-ups
+if exercise.level > 1:
+    for item in exercise.advanced_warmups:
+        if item == "Parallel Bar Support Hold":
+            print("30 seconds of "+item)
+        else:
+            print("8 reps of "+item)
+
+# Main strength training circuit
+print("\n Here we go!")
+pairs = array_split(exercise.circuit, 3)
+for i in range(len(pairs)):
+    print("Pair "+str(i+1))
+    for j in range(3):
+        print("Set "+str(j+1))
+        for item in pairs[i]:
+            if item == "Parallel Bar Support Hold":
+                print("60 seconds of "+item)
+            else:
+                print("8 reps of "+item)
+            print("Rest for 90 seconds")
+
+
+# Core training circuit
+print("\n Now core!")
+for i in range(3):
+    for item in exercise.core:
+        print("8 reps of "+item)
+        print("Rest for 60 seconds")
+
+
+# Ignore web app below:
 
 @ app.route("/", methods=['GET', 'POST'])
 def index():
