@@ -6,20 +6,21 @@ from numpy import array_split
 
 app = Flask(__name__)
 
+# FIXME What is 'SECRET_KEY' and how do I properly implement it?
+app.config['SECRET_KEY'] = "secret"
 
-class Exercise:
+
+class Routine:
     """ List of exercises and function to generate workout circuit. """
 
     dynamic_stretches = ("Yuri's Shoulder Band Warmup",
                          "Squat Sky Reaches",
                          "GMB Wrist Prep",
                          "Deadbugs")  # 30 seconds
-
     advanced_warmups = ("Arch Hangs",
                         "Parallel Bar Support Hold",  # 30 seconds
                         "Squats",
                         "Romanian Deadlifts")
-
     squat = ("Assisted Squats",
              "Squats",
              "Bulgarian Split Squats",
@@ -51,63 +52,66 @@ class Exercise:
            "Wide Rows",
            "Weighted Inverted Rows")
     progressions = (squat, pull, hinge, dip, push, row)
-
     core = ("Ring Ab Rollouts",
             "Banded Pallof Presses",
             "Reverse Hyperextension")
 
     def __init__(self, level):
-        """ Set difficulty level on a scale of 0 to 4 """
-        self.level = level
+        """ Set difficulty level on a scale of 0 to 4 and
+        generate today's main circuit components accordingly.
+        """
 
-        """ Generate today's main circuit """
+        self.level = level
         self.circuit = []
         for item in self.progressions:
             self.circuit.append(item[level])
 
+    def generate_instructions(self):
+        """ Generate a list of instructions to be displayed in webpage. """
+        self.instructions = []
 
-exercise = Exercise(3)
+        # FIXME
+        # Find a more elegant solution to implement rep count exceptions.
 
-# Dynamic stretches
-print("Let's begin!")
-for item in exercise.dynamic_stretches:
-    if item == "Deadbugs":
-        print("30 seconds of "+item)
-    else:
-        print("8 reps of "+item)
-
-# Advanced warm-ups
-if exercise.level > 1:
-    for item in exercise.advanced_warmups:
-        if item == "Parallel Bar Support Hold":
-            print("30 seconds of "+item)
-        else:
-            print("8 reps of "+item)
-
-# Main strength training circuit
-print("\n Here we go!")
-pairs = array_split(exercise.circuit, 3)
-for i in range(len(pairs)):
-    print("Pair "+str(i+1))
-    for j in range(3):
-        print("Set "+str(j+1))
-        for item in pairs[i]:
-            if item == "Parallel Bar Support Hold":
-                print("60 seconds of "+item)
+        # Dynamic stretches
+        self.instructions.append("Let's begin with some warm-ups!")
+        for item in self.dynamic_stretches:
+            if item == "Deadbugs":  # FIXME
+                self.instructions.append("30 seconds of "+item)
             else:
-                print("8 reps of "+item)
-            print("Rest for 90 seconds")
+                self.instructions.append("8 reps of "+item)
 
+        # Advanced warm-ups
+        if self.level > 1:
+            for item in self.advanced_warmups:
+                if item == "Parallel Bar Support Hold":  # FIXME
+                    self.instructions.append("30 seconds of "+item)
+                else:
+                    self.instructions.append("8 reps of "+item)
 
-# Core training circuit
-print("\n Now core!")
-for i in range(3):
-    for item in exercise.core:
-        print("8 reps of "+item)
-        print("Rest for 60 seconds")
+        # Main strength training circuit
+        self.instructions.append("\nHere we go! Do your best!")
+        pairs = array_split(self.circuit, 3)
+        for i in range(len(pairs)):
+            self.instructions.append("Pair "+str(i+1))
+            for j in range(3):
+                self.instructions.append("Set "+str(j+1))
+                for item in pairs[i]:
+                    if item == "Parallel Bar Support Hold":  # FIXME
+                        self.instructions.append("60 seconds of "+item)
+                    else:
+                        self.instructions.append("8 reps of "+item)
+                    self.instructions.append("Rest for 90 seconds")
 
+        # Core training circuit
+        self.instructions.append("\Last part: core!")
+        for i in range(3):
+            for item in self.core:
+                self.instructions.append("8 reps of "+item)
+                self.instructions.append("Rest for 60 seconds")
 
-# Ignore web app below:
+        return self.instructions
+
 
 @ app.route("/", methods=['GET', 'POST'])
 def index():
@@ -117,38 +121,30 @@ def index():
 
         # Select exercise difficulty level
         level = request.form.get("level")
-        exercise = Exercise(level)
 
-        if not level:
+        if not level or not level.isdigit():
             flash("Please select level of training.")
-            return render_template("/setup")
+            return redirect("/")
 
-        # TODO: Start workout with timer
-        """ Exercise will consist of:
-        – dynamic stretches
-        – advanced warm-ups if level > 1
-        – main strength training circuit split to three pairs,
-          three sets each (alternating, with 90 seconds rest)
-            • squat and pull
-            • hinge and dip
-            • push and row
-        – core training circuit, three sets each
+        # Generate today's routine
+        routine = Routine(int(level))
+        exercises = routine.generate_instructions()
 
-        Unless otherwise stated, do eight reps for each set.
+        # TODO: Use timer to record workout duration
+        # TODO: Show exercises one at a time by scrolling down
+        # TODO: Go back to previous by scrolling up
 
-        Click on anything/tap screen to proceed to next exercise.
-        """
-
-        return redirect("workout.html")
+        return render_template("workout.html", exercises=exercises)
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        return render_template("/setup")
+        return render_template("setup.html")
 
 
 @ app.route("/about")
-def setup():
+def about():
     return render_template("about.html")
 
 
 # TODO: Register, log-in, and workout history feature
+# TODO: Illustrations/guides for exercises

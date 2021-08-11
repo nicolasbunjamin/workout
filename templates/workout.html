@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <!-- Page content goes here -->
+    {% for exercise in exercises %}
+    <h1>{{exercise}}</h1>
+    {% endfor %}
 {% endblock %}
