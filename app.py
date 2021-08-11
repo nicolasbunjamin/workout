@@ -1,4 +1,4 @@
-''' Web app for /r/bodyweightfitness's Recomended Routine™. '''
+""" Web app for /r/bodyweightfitness's Recomended Routine™. """
 
 from flask import Flask, flash, redirect, render_template, request
 # TODO: import time
@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 
 class Exercise:
+    """ List of exercises and function to generate workout circuit. """
 
     dynamic_stretches = ("Yuri's Shoulder Band Warmup",
                          "Squat Sky Reaches",
