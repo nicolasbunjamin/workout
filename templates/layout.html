@@ -13,7 +13,7 @@
         <link href="/static/styles.css" rel="stylesheet">
 
         <!-- My JavaScript file -->
-        {% block scripts %}{% endblock %}
+        {% block head_scripts %}{% endblock %}
 
         <title>The Recommended Routine</title>
     </head>
@@ -27,6 +27,7 @@
         </nav>
         <main class="container p-5">
             {% block main %}{% endblock %}
+            {% block body_scripts %}{% endblock %}
         </main>
     </body>
 </html>

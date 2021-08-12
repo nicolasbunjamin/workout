@@ -1,6 +1,12 @@
 {% extends "layout.html" %}
 
-{% block scripts %}
+{% block head_scripts %}
+<script type="text/javascript">
+var instructions = {{ instructions | tojson }};
+</script>
+{% endblock %}
+
+{% block body_scripts %}
 <!-- BUG The scripts does not work as a separate file (scripts.js),
 but will work if written in this HTML file. -->
 <script src="static/scripts.js" type="text/javascript" ></script>
@@ -9,7 +15,7 @@ but will work if written in this HTML file. -->
 {% block main %}
     <div class="container-fluid">
         <h2 id="instruction">{{ instructions[0] }}</h2>
-        <button id="previous" onclick="previous()">Previous</button>
-        <button id="next" onclick="next()">Next</button>
+        <button id="previous">Previous</button>
+        <button id="next">Next</button>
     <div class="container-fluid">
 {% endblock %}

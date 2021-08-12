@@ -1,7 +1,8 @@
 var counter = 0;
-var instructions = {{ instructions | tojson }};
 
 document.addEventListener('keyup', navigate);
+document.querySelector('#next').addEventListener('click', next);
+document.querySelector('#previous').addEventListener('click', previous);
 
 function navigate(key) {
     // Right arrow key
