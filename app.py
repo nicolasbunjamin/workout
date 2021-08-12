@@ -100,7 +100,7 @@ class Routine:
                     self.instructions.append("8 reps of "+item)
 
         # Main strength training circuit
-        self.instructions.append("\nHere we go! Do your best!")
+        self.instructions.append("Here we go! Do your best!")
         pairs = array_split(self.circuit, 3)
         for i in range(len(pairs)):
             self.instructions.append("Pair "+str(i+1))
@@ -114,7 +114,7 @@ class Routine:
                     self.instructions.append("Rest for 90 seconds")
 
         # Core training circuit
-        self.instructions.append("\Last part: core!")
+        self.instructions.append("Last part: core!")
         for i in range(3):
             for item in self.core:
                 self.instructions.append("8 reps of "+item)
@@ -149,6 +149,7 @@ def index():
         # Generate today's routine
         routine = Routine(int(level))
         exercises = routine.generate_instructions()
+        exercises[-1] = "You're done!"
 
         return render_template("workout.html", exercises=exercises)
 

@@ -1,9 +1,49 @@
-{% extends "layout.html" %}
+<!doctype html>
 
-{% block main %}
-    <button onclick="previous()">Previous</button>
-    {% for exercise in exercises %}
-    <h1>{{exercise}}</h1>
-    {% endfor %}
-    <button onclick="next()">Next</button>
-{% endblock %}
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+        <!-- My CSS file-->
+        <link href="/static/styles.css" rel="stylesheet">
+
+        <script>
+            var counter = 0;
+
+            function next() {
+                counter++;
+                document.querySelector('#instruction').innerHTML = counter;
+            }
+
+            function previous() {
+                counter--;
+                document.querySelector('#instruction').innerHTML = counter;
+            }
+        </script>
+
+        <title>The Recommended Routine</title>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-md navbar-light bg-light border">
+            <div class="container-fluid">
+                <a class="nav-link" href="/">The Recommended Routine</a></li>
+                <a class="nav-link" href="/about">About</a></li>
+            <div class="container-fluid">
+        </nav>
+
+        <div class="container-fluid">
+            <button id="previous" onclick="previous()">Previous</button>
+            <button id="next" onclick="next()">Next</button>
+            {% for exercise in exercises %}
+            <h2 id="instruction">{{exercise}}</h2>
+            {% endfor %}
+        <div class="container-fluid">
+
+    </body>
+</html>
