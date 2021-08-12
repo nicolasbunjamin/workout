@@ -1,15 +1,18 @@
 {% extends "layout.html" %}
 
 {% block main %}
-    <form action="/" method="post">
-        <select name="level">
-            <option disabled selected value="">Level</option>
-            <option value="0">1</option>
-            <option value="1">2</option>
-            <option value="2">3</option>
-            <option value="3">4</option>
-            <option value="4">5</option>
-        </select>
-        <button class="btn btn-primary" type="submit">Start</button>
-    </form>
+<form action="/" method="post">
+    <h1>Select level of training</h1>
+    <select name="level">
+        <!-- BUG If user submits without selecting level, the app fails. -->
+        <option disabled selected value="">Level</option>
+        <option value="0">1</option>
+        <option value="1">2</option>
+        <option value="2">3</option>
+        <option value="3">4</option>
+        <option value="4">5</option>
+    </select>
+    <!-- TODO Disable button unless a value between 0 to 4 has been selected -->
+    <button class="btn btn-primary" type="submit">Start</button>
+</form>
 {% endblock %}

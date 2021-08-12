@@ -148,10 +148,10 @@ def index():
 
         # Generate today's routine
         routine = Routine(int(level))
-        exercises = routine.generate_instructions()
-        exercises[-1] = "You're done!"
+        instructions = routine.generate_instructions()
+        instructions[-1] = "You're done!"
 
-        return render_template("workout.html", exercises=exercises)
+        return render_template("workout.html", instructions=instructions)
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
