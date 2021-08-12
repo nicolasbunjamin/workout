@@ -1,13 +1,21 @@
 """ Web app for /r/bodyweightfitness's Recomended Routine™. """
 
 from flask import Flask, flash, redirect, render_template, request
+from flask_session import Session
 from numpy import array_split
 # TODO: import time
 
 app = Flask(__name__)
 
-# FIXME What is 'SECRET_KEY' and how do I properly implement it?
+
+# TODO Add separate config.py and .env
+# Read https://flask.palletsprojects.com/en/2.0.x/config/
+app.config['TESTING'] = True
 app.config['SECRET_KEY'] = "secret"
+# TODO Implement sessions
+Session(app)
+# Ensure templates are auto-reloaded
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
 class Routine:
@@ -16,11 +24,12 @@ class Routine:
     dynamic_stretches = ("Yuri's Shoulder Band Warmup",
                          "Squat Sky Reaches",
                          "GMB Wrist Prep",
-                         "Deadbugs")  # 30 seconds
+                         "Deadbugs")
     advanced_warmups = ("Arch Hangs",
-                        "Parallel Bar Support Hold",  # 30 seconds
+                        "Parallel Bar Support Hold",
                         "Squats",
                         "Romanian Deadlifts")
+    warmup_exceptions = ("Deadbugs", "Parallel Bar Support Hold")
     squat = ("Assisted Squats",
              "Squats",
              "Bulgarian Split Squats",
@@ -36,7 +45,7 @@ class Routine:
              "Banded Nordic Curl Negatives",
              "Banded Nordic Curls",
              "Nordic Curls")
-    dip = ("Parallel Bar Support Hold",  # 60 seconds
+    dip = ("Parallel Bar Support Hold",
            "Negative Dips",
            "Parallel Bar Dips",
            "Parallel Bar Dips",
@@ -52,6 +61,7 @@ class Routine:
            "Wide Rows",
            "Weighted Inverted Rows")
     progressions = (squat, pull, hinge, dip, push, row)
+    circuit_exceptions = ("Parallel Bar Support Hold")
     core = ("Ring Ab Rollouts",
             "Banded Pallof Presses",
             "Reverse Hyperextension")
@@ -76,7 +86,7 @@ class Routine:
         # Dynamic stretches
         self.instructions.append("Let's begin with some warm-ups!")
         for item in self.dynamic_stretches:
-            if item == "Deadbugs":  # FIXME
+            if item in self.warmup_exceptions:
                 self.instructions.append("30 seconds of "+item)
             else:
                 self.instructions.append("8 reps of "+item)
@@ -84,7 +94,7 @@ class Routine:
         # Advanced warm-ups
         if self.level > 1:
             for item in self.advanced_warmups:
-                if item == "Parallel Bar Support Hold":  # FIXME
+                if item in self.warmup_exceptions:
                     self.instructions.append("30 seconds of "+item)
                 else:
                     self.instructions.append("8 reps of "+item)
@@ -97,7 +107,7 @@ class Routine:
             for j in range(3):
                 self.instructions.append("Set "+str(j+1))
                 for item in pairs[i]:
-                    if item == "Parallel Bar Support Hold":  # FIXME
+                    if item in self.circuit_exceptions:
                         self.instructions.append("60 seconds of "+item)
                     else:
                         self.instructions.append("8 reps of "+item)
@@ -111,6 +121,16 @@ class Routine:
                 self.instructions.append("Rest for 60 seconds")
 
         return self.instructions
+
+
+@app.after_request
+def after_request(response):
+
+    # Ensure responses aren't cached
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = 0
+    response.headers["Pragma"] = "no-cache"
+    return response
 
 
 @ app.route("/", methods=['GET', 'POST'])
@@ -129,10 +149,6 @@ def index():
         # Generate today's routine
         routine = Routine(int(level))
         exercises = routine.generate_instructions()
-
-        # TODO: Use timer to record workout duration
-        # TODO: Show exercises one at a time by scrolling down
-        # TODO: Go back to previous by scrolling up
 
         return render_template("workout.html", exercises=exercises)
 

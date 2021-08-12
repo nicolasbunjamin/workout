@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 
 {% block main %}
+    <button onclick="previous()">Previous</button>
     {% for exercise in exercises %}
     <h1>{{exercise}}</h1>
     {% endfor %}
+    <button onclick="next()">Next</button>
 {% endblock %}
