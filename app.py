@@ -1,19 +1,23 @@
 """ Web app for /r/bodyweightfitness's Recomended Routine™. """
 
+import os
 from flask import Flask, flash, redirect, render_template, request
 from flask_session import Session
+from tempfile import mkdtemp
 from numpy import array_split
 
 app = Flask(__name__)
 
-
-# TODO Add separate config.py and .env
 # Read https://flask.palletsprojects.com/en/2.0.x/config/
 app.config['TESTING'] = True
-app.config['SECRET_KEY'] = "secret"
-# TODO Implement sessions
+
+# Configure session to use filesystem (instead of signed cookies)
+app.config["SESSION_FILE_DIR"] = mkdtemp()
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
-# TODO Ensure templates are auto-reloaded
+
+# Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
