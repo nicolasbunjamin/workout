@@ -86,38 +86,36 @@ class Routine:
         self.instructions.append("Let's begin with some warm-ups!")
         for item in self.dynamic_stretches:
             if item in self.warmup_exceptions:
-                self.instructions.append("30 seconds of "+item)
+                self.instructions.append(item+" – 30 seconds")
             else:
-                self.instructions.append("8 reps of "+item)
+                self.instructions.append(item+" – 8 reps")
 
         # Advanced warm-ups
         if self.level > 1:
             for item in self.advanced_warmups:
                 if item in self.warmup_exceptions:
-                    self.instructions.append("30 seconds of "+item)
+                    self.instructions.append(item+" – 30 seconds")
                 else:
-                    self.instructions.append("8 reps of "+item)
+                    self.instructions.append(item+" – 8 reps")
 
         # Main strength training circuit
-        self.instructions.append("Here we go! Do your best!")
+        self.instructions.append("Do your best!")
         pairs = array_split(self.circuit, 3)
         for i in range(len(pairs)):
-            self.instructions.append("Pair "+str(i+1))
             for j in range(3):
-                self.instructions.append("Set "+str(j+1))
                 for item in pairs[i]:
                     if item in self.circuit_exceptions:
-                        self.instructions.append("60 seconds of "+item)
+                        self.instructions.append(item+" – 30 seconds")
                     else:
-                        self.instructions.append("8 reps of "+item)
-                    self.instructions.append("Rest for 90 seconds")
+                        self.instructions.append(item+" – 8 reps")
+                    self.instructions.append("Rest – 90 seconds")
 
         # Core training circuit
-        self.instructions.append("Last part: core!")
+        self.instructions.append("We're almost done!")
         for i in range(3):
             for item in self.core:
-                self.instructions.append("8 reps of "+item)
-                self.instructions.append("Rest for 60 seconds")
+                self.instructions.append(item+" – 8 reps")
+                self.instructions.append("Rest – 60 seconds")
 
         return self.instructions
 

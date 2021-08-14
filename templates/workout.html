@@ -10,6 +10,7 @@ var instructions = {{ instructions | tojson }};
     <div class="container-fluid">
         <div id="instruction-box">
             <h1 id="instruction">{{ instructions[0] }}</h1>
+            <p id="timer" class="text-muted"></p>
         </div>
         <div id="control-box">
             <button class="btn btn-dark" id="previous">Previous</button>
