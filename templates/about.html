@@ -1,15 +1,20 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<h1>About</h1>
-<p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-    Ut enim ad minim veniam, quis nostrud exercitation ullamco
-    laboris nisi ut aliquip ex ea commodo consequat.
-    Duis aute irure dolor in reprehenderit in voluptate
-    velit esse cillum dolore eu fugiat nulla pariatur.
-    Excepteur sint occaecat cupidatat non proident,
-    sunt in culpa qui officia deserunt mollit anim id est laborum.
-</p>
+<div class="container-fluid">
+    <h2>About</h2>
+    <p>
+        This workout web application is based off of /r/bodyweightfitness's
+        <a href="https://www.reddit.com/r/bodyweightfitness/wiki/kb/recommended_routine">
+        Recommended Routine</a>, made for and submitted to CS50 as my
+        final project assignment.
+    </p>
+
+    <h4>How to Use</h4>
+    <p>
+        Simply select your desired training level between 1 and 5,
+        where level 1 is the most beginner-friendly and
+        level 5 is the most difficult and advanced.
+    </p>
+</div>
 {% endblock %}

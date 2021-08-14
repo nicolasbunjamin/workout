@@ -3,7 +3,6 @@
 from flask import Flask, flash, redirect, render_template, request
 from flask_session import Session
 from numpy import array_split
-# TODO: import time
 
 app = Flask(__name__)
 
@@ -14,7 +13,7 @@ app.config['TESTING'] = True
 app.config['SECRET_KEY'] = "secret"
 # TODO Implement sessions
 Session(app)
-# Ensure templates are auto-reloaded
+# TODO Ensure templates are auto-reloaded
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 
