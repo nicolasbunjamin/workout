@@ -6,3 +6,7 @@
 #timer {
     font-size: x-large
 }
+
+.main-box {
+    max-width: 600px;
+}

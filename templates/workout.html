@@ -7,7 +7,7 @@ var instructions = {{ instructions | tojson }};
 {% endblock %}
 
 {% block main %}
-    <div class="container-fluid">
+    <div class="container-fluid main-box">
         <div id="instruction-box">
             <h1 id="instruction">{{ instructions[0] }}</h1>
             <p id="timer" class="text-muted"></p>
